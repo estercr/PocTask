@@ -7,6 +7,7 @@ import {
     FlatList,
     TouchableOpacity,
     Platform,
+    AsyncStorage,
 } from 'react-native'
 import moment from 'moment'
 import 'moment/locale/pt-br'
@@ -51,6 +52,7 @@ export default class Agenta extends Component {
             visibleTasks = this.state.tasks.filter(pedding)
         }
         this.setState({ visibleTasks })
+        AsyncStorage.setItem('tasks', JSON.stringify(this.state.tasks))
     }
 
     toggleFilter = () => {
@@ -58,8 +60,10 @@ export default class Agenta extends Component {
             this.filterTasks)
     }
 
-    componentDidMount = () => {
-        this.filterTasks()
+    componentDidMount = async () => {
+        const data = await AsyncStorage.getItem('tasks')
+        const tasks = JSON.parse(data) || []
+        this.setState({ tasks }, this.filterTasks)
     }
 
     toggleTask = id => {
@@ -102,10 +106,10 @@ export default class Agenta extends Component {
                 <View style={styles.taskContainer}>
                     <FlatList data={this.state.visibleTasks}
                         keyExtractor={item => `${item.id}`}
-                        renderItem={({ item }) => 
-                        <Task {...item} 
-                        onToggleTask={this.toggleTask} 
-                        onDelete={this.deleteTask} />
+                        renderItem={({ item }) =>
+                            <Task {...item}
+                                onToggleTask={this.toggleTask}
+                                onDelete={this.deleteTask} />
                         } />
                 </View>
                 <ActionButton buttonColor={commonStyles.colors.today}
@@ -118,7 +122,6 @@ export default class Agenta extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
     },
     background: {
         flex: 3,
@@ -141,13 +144,13 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginBottom: 30,
     },
-    taksContainer: {
+    taskContainer: {
         flex: 7,
     },
     iconBar: {
         marginTop: Platform.OS === 'ios' ? 50 : 10,
         marginHorizontal: 20,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
     }
 })
