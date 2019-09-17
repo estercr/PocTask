@@ -16,8 +16,9 @@ import commonStyles from '../commonStyles'
 export default props => {
     const logout = () => {
         delete axios.defaults.headers.common['Authorization']
-        AsyncStorage.removeItem('userData')
+        AsyncStorage.removeItem('userData').useEffect()
         props.navigation.navigate('Auth')
+        
     }
 
     return (

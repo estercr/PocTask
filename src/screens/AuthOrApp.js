@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 
 export default class AuthOrApp extends Component {
-    UNSAFE_componentWillMount = async () => {
+    componentWillMount = async () => {
         const json = await AsyncStorage.getItem('userData')
         const userData = JSON.parse(json) || {}
 

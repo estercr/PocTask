@@ -25,11 +25,11 @@ import monthImage from '../../assets/imgs/month.jpg'
 export default class Agenta extends Component {
     state = {
         tasks: [],
-
         visibleTasks: [],
         showDoneTasks: true,
         showAddTask: false,
     }
+
 
     addTask = async  task => {
         try {
@@ -86,6 +86,7 @@ export default class Agenta extends Component {
             const maxDate = moment().add({ days: this.props.daysAhead }).format('YYY-MM-DD 23:59')
             const res = await axios.get(`${server}/tasks?date=${maxDate}`)
             this.setState({ tasks: res.data }, this.filterTasks)
+            
         } catch (err) {
             showError(err)
         }
@@ -95,7 +96,7 @@ export default class Agenta extends Component {
         let styleColor = null
         let image = null
 
-        switch(this.props.daysAhead){
+        switch (this.props.daysAhead) {
             case 0:
                 styleColor = commonStyles.colors.today
                 image = todayImage
@@ -185,3 +186,4 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     }
 })
+
