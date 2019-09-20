@@ -51,6 +51,17 @@ export default class Agenta extends Component {
             showError(err)
         }
     }
+    alterTask = async task => {
+        try {
+            await axios.push(`${server}/tasks/${id}`, {
+                desc: task.desc,
+                estimateAt: task.date
+            })
+            this.setState({showAddTask: true}, this.loadTasks)
+        } catch(err){
+            showError(err)
+        }
+    }
 
     filterTasks = () => {
         let visibleTasks = null
@@ -86,7 +97,7 @@ export default class Agenta extends Component {
             const maxDate = moment().add({ days: this.props.daysAhead }).format('YYY-MM-DD 23:59')
             const res = await axios.get(`${server}/tasks?date=${maxDate}`)
             this.setState({ tasks: res.data }, this.filterTasks)
-            
+
         } catch (err) {
             showError(err)
         }
