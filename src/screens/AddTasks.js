@@ -13,7 +13,6 @@ import {
     Platform
 } from 'react-native'
 import moment from 'moment'
-import {format} from 'date-fns'
 import commonStyles from '../commonStyles'
 
 
